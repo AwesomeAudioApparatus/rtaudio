@@ -92,7 +92,21 @@ file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/configure.ac" CONFIGAC
 string(REGEX REPLACE ${R} "\\1" PACKAGE_VERSION ${CONFIGAC})
 
 # Init variables
-set(rtaudio_SOURCES RtAudio.cpp RtAudio.h rtaudio_c.cpp rtaudio_c.h)
+set(rtaudio_SOURCES 
+    RtAudio.cpp
+    RtAudio.h 
+    rtaudio_c.cpp
+    rtaudio_c.h 
+    drivers/RtAudio_FreeRtos_Esp32.cpp 
+    drivers/RtAudio_Linux_Alsa.cpp 
+    drivers/RtAudio_Linux_Pulse.cpp 
+    drivers/RtAudio_Unix_Jack.cpp 
+    drivers/RtAudio_Windows_Ds.cpp 
+    drivers/RtAudio_Linux_Oss.cpp 
+    drivers/RtAudio_Macosx_Core.cpp 
+    drivers/RtAudio_Windows_Asio.cpp 
+    drivers/RtAudio_Windows_Wasapi.cpp 
+)
 set(LINKLIBS)
 set(PKGCONFIG_REQUIRES)
 set(API_DEFS)

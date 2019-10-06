@@ -1,7 +1,17 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT(RtAudio, 5.1.0, gary@music.mcgill.ca, rtaudio)
 AC_CONFIG_AUX_DIR(config)
-AC_CONFIG_SRCDIR(RtAudio.cpp)
+AC_CONFIG_SRCDIR(RtAudio.cpp \
+    drivers/RtAudio_FreeRtos_Esp32.cpp \ 
+    drivers/RtAudio_Linux_Alsa.cpp \
+    drivers/RtAudio_Linux_Pulse.cpp \
+    drivers/RtAudio_Unix_Jack.cpp \ 
+    drivers/RtAudio_Windows_Ds.cpp \
+    drivers/RtAudio_Linux_Oss.cpp \ 
+    drivers/RtAudio_Macosx_Core.cpp \
+    drivers/RtAudio_Windows_Asio.cpp \ 
+    drivers/RtAudio_Windows_Wasapi.cpp \
+)
 AC_CONFIG_FILES([rtaudio.pc Makefile tests/Makefile doc/Makefile doc/doxygen/Doxyfile])
 AM_INIT_AUTOMAKE([1.14 -Wall -Werror foreign subdir-objects])
 
