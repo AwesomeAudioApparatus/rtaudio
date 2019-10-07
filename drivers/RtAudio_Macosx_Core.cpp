@@ -1,4 +1,11 @@
 #if defined(__MACOSX_CORE__)
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 // The OS X CoreAudio API is designed to use a separate callback
 // procedure for each of its audio devices.  A single RtAudio duplex

@@ -1,4 +1,11 @@
 #if defined(__LINUX_OSS__)
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 #include <unistd.h>
 #include <sys/ioctl.h>

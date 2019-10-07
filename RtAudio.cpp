@@ -57,10 +57,6 @@ const unsigned int RtApi::SAMPLE_RATES[] = {
 };
 
 #if defined(__WINDOWS_DS__) || defined(__WINDOWS_ASIO__) || defined(__WINDOWS_WASAPI__)
-  #define MUTEX_INITIALIZE(A) InitializeCriticalSection(A)
-  #define MUTEX_DESTROY(A)    DeleteCriticalSection(A)
-  #define MUTEX_LOCK(A)       EnterCriticalSection(A)
-  #define MUTEX_UNLOCK(A)     LeaveCriticalSection(A)
 
   #include "tchar.h"
 
@@ -77,15 +73,6 @@ const unsigned int RtApi::SAMPLE_RATES[] = {
     return s;
   }
 
-#elif defined(__LINUX_ALSA__) || defined(__LINUX_PULSE__) || defined(__UNIX_JACK__) || defined(__LINUX_OSS__) || defined(__MACOSX_CORE__)
-  // pthread API
-  #define MUTEX_INITIALIZE(A) pthread_mutex_init(A, NULL)
-  #define MUTEX_DESTROY(A)    pthread_mutex_destroy(A)
-  #define MUTEX_LOCK(A)       pthread_mutex_lock(A)
-  #define MUTEX_UNLOCK(A)     pthread_mutex_unlock(A)
-#else
-  #define MUTEX_INITIALIZE(A) abs(*A) // dummy definitions
-  #define MUTEX_DESTROY(A)    abs(*A) // dummy definitions
 #endif
 
 // *************************************************** //
@@ -112,6 +99,7 @@ const char* rtaudio_api_names[][2] = {
   { "wasapi"      , "WASAPI" },
   { "asio"        , "ASIO" },
   { "ds"          , "DirectSound" },
+  { "esp32"       , "ESP32" },
   { "dummy"       , "Dummy" },
 };
 const unsigned int rtaudio_num_api_names = 
@@ -143,6 +131,9 @@ extern "C" const RtAudio::Api rtaudio_compiled_apis[] = {
 #endif
 #if defined(__MACOSX_CORE__)
   RtAudio::MACOSX_CORE,
+#endif
+#if defined(__RTAUDIO_FREERTOS_ESP32__)
+  RtAudio::RTAUDIO_ESP32,
 #endif
 #if defined(__RTAUDIO_DUMMY__)
   RtAudio::RTAUDIO_DUMMY,
@@ -231,6 +222,10 @@ void RtAudio :: openRtApi( RtAudio::Api api )
 #if defined(__RTAUDIO_DUMMY__)
   if ( api == RTAUDIO_DUMMY )
     rtapi_ = new RtApiDummy();
+#endif
+#if defined(__RTAUDIO_FREERTOS_ESP32__)
+  if ( api == RTAUDIO_FREERTOS_ESP32 )
+    rtapi_ = new RtApiEsp32();
 #endif
 }
 

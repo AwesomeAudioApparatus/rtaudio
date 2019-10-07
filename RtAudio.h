@@ -291,6 +291,7 @@ class RTAUDIO_DLL_PUBLIC RtAudio
     WINDOWS_WASAPI, /*!< The Microsoft WASAPI API. */
     WINDOWS_ASIO,   /*!< The Steinberg Audio Stream I/O API. */
     WINDOWS_DS,     /*!< The Microsoft DirectSound API. */
+    RTAUDIO_ESP32,  /*!< A compilable but non-functional API. */
     RTAUDIO_DUMMY,  /*!< A compilable but non-functional API. */
     NUM_APIS        /*!< Number of values in this enum. */
   };
@@ -1181,7 +1182,7 @@ public:
   void stopStream( void ) {}
   void abortStream( void ) {}
 
-  private:
+private:
 
   bool probeDeviceOpen( unsigned int /*device*/, StreamMode /*mode*/, unsigned int /*channels*/, 
                         unsigned int /*firstChannel*/, unsigned int /*sampleRate*/,
@@ -1189,6 +1190,48 @@ public:
                         RtAudio::StreamOptions * /*options*/ ) { return false; }
 };
 
+#endif
+
+#if defined(__RTAUDIO_FREERTOS_ESP32__)
+
+class RtApiEsp32: public RtApi
+{
+public:
+
+  RtApiEsp32() { errorText_ = "RtApiDummy: This class provides no functionality."; error( RtAudioError::WARNING ); }
+  RtAudio::Api getCurrentApi( void ) { return RtAudio::RTAUDIO_DUMMY; }
+  unsigned int getDeviceCount( void ) { return 0; }
+  RtAudio::DeviceInfo getDeviceInfo( unsigned int /*device*/ ) { RtAudio::DeviceInfo info; return info; }
+  void closeStream( void ) {}
+  void startStream( void ) {}
+  void stopStream( void ) {}
+  void abortStream( void ) {}
+
+private:
+
+  bool probeDeviceOpen( unsigned int /*device*/, StreamMode /*mode*/, unsigned int /*channels*/, 
+                        unsigned int /*firstChannel*/, unsigned int /*sampleRate*/,
+                        RtAudioFormat /*format*/, unsigned int * /*bufferSize*/,
+                        RtAudio::StreamOptions * /*options*/ ) { return false; }
+};
+
+#endif
+
+#if defined(__WINDOWS_DS__) || defined(__WINDOWS_ASIO__) || defined(__WINDOWS_WASAPI__)
+  #define MUTEX_INITIALIZE(A) InitializeCriticalSection(A)
+  #define MUTEX_DESTROY(A)    DeleteCriticalSection(A)
+  #define MUTEX_LOCK(A)       EnterCriticalSection(A)
+  #define MUTEX_UNLOCK(A)     LeaveCriticalSection(A)
+
+#elif defined(__LINUX_ALSA__) || defined(__LINUX_PULSE__) || defined(__UNIX_JACK__) || defined(__LINUX_OSS__) || defined(__MACOSX_CORE__)
+  // pthread API
+  #define MUTEX_INITIALIZE(A) pthread_mutex_init(A, NULL)
+  #define MUTEX_DESTROY(A)    pthread_mutex_destroy(A)
+  #define MUTEX_LOCK(A)       pthread_mutex_lock(A)
+  #define MUTEX_UNLOCK(A)     pthread_mutex_unlock(A)
+#else
+  #define MUTEX_INITIALIZE(A) abs(*A) // dummy definitions
+  #define MUTEX_DESTROY(A)    abs(*A) // dummy definitions
 #endif
 
 #endif

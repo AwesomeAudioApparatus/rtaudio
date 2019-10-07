@@ -51,6 +51,7 @@ option(RTAUDIO_API_ALSA "Build ALSA API" ${LINUX})
 option(RTAUDIO_API_PULSE "Build PulseAudio API" ${pulse_FOUND})
 option(RTAUDIO_API_JACK "Build JACK audio server API" ${HAVE_JACK})
 option(RTAUDIO_API_CORE "Build CoreAudio API" ${APPLE})
+option(RTAUDIO_API_ESP32 "Build ESP32 Audio API" ${ESP32})
 
 # Check for functions
 include(CheckFunctionExists)
@@ -113,6 +114,13 @@ set(API_DEFS)
 set(API_LIST)
 
 # Tweak API-specific configuration.
+
+# FreeRtos ESP32
+#if (RTAUDIO_API_ESP32)
+  include_directories(include "../../espressif/esp-idf/components/freertos/include" "../../espressif/esp-idf/components/esp_common/include" "../../espressif/esp-idf/components/driver/include")
+  list(APPEND API_DEFS "-D__FREERTOS_ESP32__")
+  list(APPEND API_LIST "esp32")
+#endif()
 
 # Jack
 if (RTAUDIO_API_JACK AND jack_FOUND)

@@ -1,4 +1,11 @@
 #if defined(__WINDOWS_ASIO__) // ASIO API on Windows
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 // The ASIO API is designed around a callback scheme, so this
 // implementation is similar to that used for OS-X CoreAudio and Linux

@@ -1,4 +1,11 @@
 #if defined(__WINDOWS_DS__) // Windows DirectSound API
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 // Modified by Robin Davies, October 2005
 // - Improvements to DirectX pointer chasing. 

@@ -1,4 +1,11 @@
 #if defined(__UNIX_JACK__)
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 // JACK is a low-latency audio server, originally written for the
 // GNU/Linux operating system and now also ported to OS-X. It can

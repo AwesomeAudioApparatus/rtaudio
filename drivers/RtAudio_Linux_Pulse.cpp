@@ -1,4 +1,11 @@
 #if defined(__LINUX_PULSE__)
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
 
 // Code written by Peter Meerwald, pmeerw@pmeerw.net
 // and Tristan Matthews.

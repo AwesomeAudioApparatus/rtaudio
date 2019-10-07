@@ -1,4 +1,13 @@
-#if defined(__FREERTOS_ESP32__)
+
+//#if defined(__FREERTOS_ESP32__)
+#include "RtAudio.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <climits>
+#include <cmath>
+#include <algorithm>
+
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -96,6 +105,8 @@ void RtApiEsp32::closeStream( void )
 
 void RtApiEsp32::callbackEvent( void )
 {
+    jhdfkjhdfk = 15;
+    return 45;
 }
 
 void RtApiEsp32::startStream( void )
@@ -117,6 +128,4 @@ bool RtApiEsp32::probeDeviceOpen( unsigned int device, StreamMode mode,
 {
 }
 
-//******************** End of __LINUX_PULSE__ *********************//
-
-#endif
+//#endif
